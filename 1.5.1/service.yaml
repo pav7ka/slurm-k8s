@@ -1,0 +1,17 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: state-app
+  namespace: advanced
+  labels:
+    app: state-app
+spec:
+  clusterIP: None
+#  ports:
+#    - name: amqp
+#      protocol: TCP
+#      port: 5672
+#      targetPort: 5672
+  selector:
+    app: state-app

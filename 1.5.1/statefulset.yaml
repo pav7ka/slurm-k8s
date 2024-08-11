@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: state-app
+  namespace: advanced
+spec:
+  serviceName: state-app
+  replicas: 1
+  selector:
+    matchLabels:
+      app: state-app
+  template:
+    metadata:
+      labels:
+        app: state-app
+    spec:
+      serviceAccountName: state-app
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: nginx
+          image: nginx:1.27
+#          ports:
+#            - name: amqp
+#              protocol: TCP
+#              containerPort: 5672
+          volumeMounts:
+#            - name: config-volume
+#              mountPath: /etc/rabbitmq
+            - name: data
+              mountPath: /var/lib/www
+#      volumes:
+#        - name: config-volume
+#          configMap:
+#            name: rabbitmq-config
+#            items:
+#              - key: rabbitmq.conf
+#                path: rabbitmq.conf
+#              - key: enabled_plugins
+#                path: enabled_plugins
+#      affinity:
+#        podAntiAffinity:
+#          preferredDuringSchedulingIgnoredDuringExecution:
+#            - weight: 100
+#              podAffinityTerm:
+#                labelSelector:
+#                  matchExpressions:
+#                    - key: app
+#                      operator: In
+#                      values:
+#                        - rabbitmq
+#                topologyKey: kubernetes.io/hostname
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Mi
+        storageClassName: longhorn
+

@@ -1,0 +1,12 @@
+---
+persistence:
+  defaultClass: true
+  reclaimPolicy: Retain # Для запуска важных приложений очень важно использовать данную reclaimPolicy
+  defaultClassReplicaCount: 2 # Мы будем держать по две реплики каждого диска
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  host: longhorn.s0xxxxx.edu.slurm.io
+
+...

@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment-test
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: deployment-test
+    spec:
+      containers:
+      - image: debian:stable
+        name: debian
+        command:
+          - "/bin/sh"
+          - "-c"
+        args: ['while true; do echo "Hello, ${USERNAME}!"; sleep 10; done']
+        env:
+          - name: USERNAME
+            value: "USERNAME"
+...
